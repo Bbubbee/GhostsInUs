@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b316awp8q2xa4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gab56"]
+size = Vector2(350.75, 332.25)
+
+[node name="CustomButton" type="Area2D"]
+
+[node name="Colliders" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_gab56")
