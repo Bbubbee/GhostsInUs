@@ -1,12 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://i1im6ucgmiuh"]
+[gd_scene load_steps=2 format=3 uid="uid://i1im6ucgmiuh"]
 
 [ext_resource type="PackedScene" uid="uid://b6skhtwldh4ax" path="res://scenes/levels/level_manager/base_level.tscn" id="1_oskiu"]
-[ext_resource type="PackedScene" uid="uid://b5x4lvrqh1mqr" path="res://scenes/actors/selectable_object.tscn" id="2_0f4re"]
 
 [node name="Level1" instance=ExtResource("1_oskiu")]
-
-[node name="SelectableObject" parent="." index="0" instance=ExtResource("2_0f4re")]
-position = Vector2(88, 553)
-
-[node name="SelectableObject2" parent="." index="1" instance=ExtResource("2_0f4re")]
-position = Vector2(1065, 553)
