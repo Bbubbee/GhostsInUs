@@ -14,6 +14,10 @@ signal change_level(level_path: String, enter_params: Types.EnterParams)
 
 @onready var subtitle = $Subtitle
 
+@export var blue: Color = Color("#4682b4")
+@export var green: Color = Color("#639765")
+@export var red: Color = Color("#a65455")
+
 
 
 func _ready():
@@ -33,12 +37,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		# Typed the correct character. 
 		if key_typed == current_line[index]:
-			current_line[index+1] = '[/color]'
-			subtitle.text = current_line
 			print("correct!: " + key_typed)
 			
 			# Advance to the next character. 
 			index = min(index+1, current_line.length()-1)
+			set_next_char(1)
+
+func set_next_char(next_char_index: int):
+	var blue_text = get_bbcode_color_tag(blue) + current_line.substr(0, next_char_index) + get_bbcode_color_tag()
+	print(blue_text) 
+
+
+func get_bbcode_color_tag(color = null) -> String:
+	if color: return "[color=#" + color.to_html(false) + "]" 
+	else: return "[/color]"
 			
 			
 		
