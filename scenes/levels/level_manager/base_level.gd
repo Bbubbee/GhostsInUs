@@ -7,7 +7,7 @@ class_name Level
 			* An autoload "Types" node with class "EnterParams" 
 """
 
-var current_line: String = "hello [color=red]sexy ass"
+var text: String = "this is america don't catch me slipping"
 var index: int = 0
 
 signal change_level(level_path: String, enter_params: Types.EnterParams)
@@ -21,7 +21,7 @@ signal change_level(level_path: String, enter_params: Types.EnterParams)
 
 
 func _ready():
-	subtitle.text = current_line
+	subtitle.text = text
 
 
 func init(enter_params: Types.EnterParams = null): 
@@ -36,17 +36,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		#print(key_typed)
 		
 		# Typed the correct character. 
-		if key_typed == current_line[index]:
-			print("correct!: " + key_typed)
-			
+		if key_typed == text[index]:
 			# Advance to the next character. 
-			index = min(index+1, current_line.length()-1)
-			set_next_char(1)
+			index = min(index+1, text.length()-1)
+			set_next_char()
 
-func set_next_char(next_char_index: int):
-	var blue_text = get_bbcode_color_tag(blue) + current_line.substr(0, next_char_index) + get_bbcode_color_tag()
-	print(blue_text) 
-
+# Display correctly typed character
+func set_next_char():
+	var blue_text = get_bbcode_color_tag(blue) + text.substr(0, index) + get_bbcode_color_tag()
+	var green_text = get_bbcode_color_tag(green) + text.substr(index, 1) + get_bbcode_color_tag()
+	var red_text = get_bbcode_color_tag(red) + text.substr(index+1, text.length()-1) + get_bbcode_color_tag()
+	subtitle.text = blue_text+green_text+red_text
+	
 
 func get_bbcode_color_tag(color = null) -> String:
 	if color: return "[color=#" + color.to_html(false) + "]" 

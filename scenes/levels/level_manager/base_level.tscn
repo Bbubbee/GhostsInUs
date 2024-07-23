@@ -11,5 +11,6 @@ offset_top = 541.0
 offset_right = 1019.0
 offset_bottom = 581.0
 size_flags_vertical = 8
+theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
 text = "Hello test textq"
