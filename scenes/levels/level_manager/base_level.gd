@@ -15,13 +15,13 @@ signal change_level(level_path: String, enter_params: Types.EnterParams)
 @onready var subtitle = $Subtitle
 
 @export var blue: Color = Color("#4682b4")
-@export var green: Color = Color("#639765")
+@export var white: Color = Color("#639765")
 @export var red: Color = Color("#a65455")
 
 
 
 func _ready():
-	subtitle.text = text
+	set_subtitle()
 
 
 func init(enter_params: Types.EnterParams = null): 
@@ -39,19 +39,27 @@ func _unhandled_input(event: InputEvent) -> void:
 		if key_typed == text[index]:
 			# Advance to the next character. 
 			index = min(index+1, text.length()-1)
-			set_next_char()
+			set_subtitle()
+
 
 # Display correctly typed character
-func set_next_char():
+func set_subtitle():
+	# Correct chars. 
 	var blue_text = get_bbcode_color_tag(blue) + text.substr(0, index) + get_bbcode_color_tag()
-	var green_text = get_bbcode_color_tag(green) + text.substr(index, 1) + get_bbcode_color_tag()
-	var red_text = get_bbcode_color_tag(red) + text.substr(index+1, text.length()-1) + get_bbcode_color_tag()
-	subtitle.text = blue_text+green_text+red_text
+	# Current char. 
+	var green_text = get_bbcode_color_tag(white) + text.substr(index, 1) + get_bbcode_color_tag()
+	# Chars left. 
+	var red_text = get_bbcode_color_tag(white) + text.substr(index+1, text.length()-1) + get_bbcode_color_tag()
+	subtitle.text = set_center_tags(blue_text+green_text+red_text)
 	
 
 func get_bbcode_color_tag(color = null) -> String:
-	if color: return "[color=#" + color.to_html(false) + "]" 
+	if color: return "[color=#" + color.to_html() + "]" 
 	else: return "[/color]"
+
+
+func set_center_tags(string_to_center: String) -> String: 
+	return "[center]" + string_to_center + "[/center]"
 			
 			
 		

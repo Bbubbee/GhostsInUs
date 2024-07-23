@@ -4,13 +4,24 @@
 
 [node name="BaseLevel" type="Node2D"]
 script = ExtResource("1_s73ik")
+blue = Color(0.980392, 1, 0, 1)
+white = Color(1, 1, 1, 0.729412)
+red = Color(0.980392, 0, 0.0117647, 1)
 
 [node name="Subtitle" type="RichTextLabel" parent="."]
-offset_left = 180.0
-offset_top = 541.0
-offset_right = 1019.0
-offset_bottom = 581.0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = 529.0
+offset_right = 1153.0
+offset_bottom = 650.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
 text = "Hello test textq"
+scroll_active = false
