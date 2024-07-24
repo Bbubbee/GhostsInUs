@@ -12,7 +12,7 @@ var current_level: Node2D
 
 # NOTE: Commented these 2 functions because of changes in paramater types.
 func _ready() -> void:
-	init_level("res://scenes/levels/actual_levels/level_1.tscn")
+	init_level("res://scenes/ui/screens/main_menu.tscn")
 
 
 func init_level(level_path: String):
