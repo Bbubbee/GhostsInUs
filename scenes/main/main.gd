@@ -6,8 +6,10 @@ extends Node2D
 @export var current_color: Color = Color("#639765")
 @export var todo_color: Color = Color("#a65455")
 
+var points = 1 
+
 var index: int = 0
-var text: String = "this is america don't catch me slipping"
+var text: String = "tit"
 
 
 func _ready() -> void:
@@ -19,12 +21,21 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed(): 
 		var typed_event = event as InputEventKey
 		var key_typed = PackedByteArray([typed_event.unicode]).get_string_from_utf8()
-		
+			
 		# Typed the correct character. 
-		if key_typed == text[index]:
+		if key_typed == text[min(index, text.length()-1)]:
 			# Advance to the next character. 
-			index = min(index+1, text.length()-1)
+			index = min(index+1, text.length())
 			set_subtitle()
+		
+		# Finished the word
+		if index == text.length(): 
+			index = 0 
+			text = "pussy ass hoe"
+			set_subtitle()
+			
+		
+	
 
 """
 	Sets the subtitle based on a given string. 
