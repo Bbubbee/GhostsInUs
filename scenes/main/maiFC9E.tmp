@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4iwy3vdjsbsk"]
+
+[ext_resource type="Script" path="res://scenes/main/main.gd" id="1_2nxak"]
+[ext_resource type="Script" path="res://scenes/main/dialogue_generator.gd" id="2_kgr3w"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_2nxak")
+done_color = Color(1, 0.960938, 0, 1)
+current_color = Color(1, 1, 1, 1)
+todo_color = Color(0.351563, 0.437683, 1, 1)
+
+[node name="DialogueOption" type="RichTextLabel" parent="."]
+offset_left = 100.0
+offset_top = 336.0
+offset_right = 276.0
+offset_bottom = 400.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+bbcode_enabled = true
+text = "[center]dis bitch got me paying her rent [/center]"
+
+[node name="DialogueGenerator" type="Node2D" parent="."]
+script = ExtResource("2_kgr3w")

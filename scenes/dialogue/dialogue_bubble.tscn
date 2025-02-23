@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg7gx8v1x7opo"]
+
+[ext_resource type="Script" path="res://scenes/dialogue/dialogue_bubble.gd" id="1_pho3w"]
+
+[node name="DialogueBubble" type="RichTextLabel"]
+offset_right = 284.0
+offset_bottom = 85.0
+text = "Tenohoifhosidfdas"
+script = ExtResource("1_pho3w")

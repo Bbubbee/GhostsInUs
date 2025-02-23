@@ -23,21 +23,17 @@ text = "[center]dis bitch got me paying her rent [/center]"
 [node name="DialogueGenerator" type="Node2D" parent="."]
 script = ExtResource("2_kgr3w")
 
-[node name="Markers" type="Node2D" parent="DialogueGenerator"]
-
-[node name="DialogueMarker1" type="Marker2D" parent="DialogueGenerator/Markers"]
+[node name="DialogueMarker1" type="Marker2D" parent="DialogueGenerator"]
 position = Vector2(554, 62)
 
-[node name="DialogueMarker2" type="Marker2D" parent="DialogueGenerator/Markers"]
+[node name="DialogueMarker2" type="Marker2D" parent="DialogueGenerator"]
 position = Vector2(99, 328)
 
-[node name="DialogueMarker3" type="Marker2D" parent="DialogueGenerator/Markers"]
+[node name="DialogueMarker3" type="Marker2D" parent="DialogueGenerator"]
 position = Vector2(940, 286)
 
-[node name="DialogueMarker4" type="Marker2D" parent="DialogueGenerator/Markers"]
+[node name="DialogueMarker4" type="Marker2D" parent="DialogueGenerator"]
 position = Vector2(578, 549)
-
-[node name="Options" type="Node2D" parent="DialogueGenerator"]
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 offset_left = 446.0
