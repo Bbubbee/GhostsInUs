@@ -60,16 +60,17 @@ func _unhandled_input(event: InputEvent) -> void:
 		# Get the first letter of each option. 
 		if not active_option: 
 			for option in options.get_children(): 
-				if key_typed == option.text[0]: 
+				if key_typed == option.raw_text[0]: 
 					active_option = option	
-					active_string = active_option.text 
-					active_option.text = Globals.set_subtitle(index, active_string)
-					index = min(index+1, active_option.text.length())
+					active_string = active_option.raw_text 
+					active_option.text = Globals.format_string(index, active_string)
+					index = min(index+1, active_option.raw_text.length())
+					print('lol')
 		else: 
 			# Typed the correct character
 			if key_typed == active_string[min(index, active_string.length()-1)]:
 				## Advance to the next character
-				active_option.text = Globals.set_subtitle(index, active_string)
+				active_option.text = Globals.format_string(index, active_string)
 				index = min(index+1, active_string.length())
 				
 

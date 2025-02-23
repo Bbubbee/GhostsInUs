@@ -19,7 +19,7 @@ func _ready() -> void:
 	var file = FileAccess.open(dialogue, FileAccess.READ)
 	lines = file.get_as_text().split("\n")
 	text = lines[0]
-	subtitle.text = Globals.set_subtitle(index, text, done_color, current_color, todo_color)
+	subtitle.text = Globals.format_string(index, text, done_color, current_color, todo_color)
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Inputted a key 
@@ -31,8 +31,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if key_typed == text[min(index, text.length()-1)]:
 			# Advance to the next character
 			index = min(index+1, text.length())
-			subtitle.text = Globals.set_subtitle(index, text, done_color, current_color, todo_color)
-			#set_subtitle()
+			subtitle.text = Globals.format_string(index, text, done_color, current_color, todo_color)
 		
 		# Finished the word
 		if index == text.length(): 
@@ -40,5 +39,5 @@ func _unhandled_input(event: InputEvent) -> void:
 			current_line += 1
 			text = lines[min(current_line, lines.size()-1)]
 			
-			subtitle.text = Globals.set_subtitle(index, text, done_color, current_color, todo_color)
+			subtitle.text = Globals.format_string(index, text, done_color, current_color, todo_color)
 		

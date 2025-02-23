@@ -4,7 +4,7 @@ extends Node
 ## Sets the subtitle based on a given string. 
 ## Formats the subtitle with the correct colors. 
 ## Colors for done, current, and todo chararacters.
-func set_subtitle(
+func format_string(
 	index, 
 	text, 
 	before_color: Color = Color.YELLOW, 
