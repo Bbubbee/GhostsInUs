@@ -3,7 +3,9 @@ extends Node2D
 const DIALOGUE_BUBBLE = preload("res://scenes/dialogue/dialogue_bubble.tscn")
 
 var current_character
-var current_question: int = 1
+var current_qna_index: int = 1
+var current_question
+@onready var question: RichTextLabel = $Question
 
 # Places to spawn the dialogue. 
 @onready var dialogue_marker_1: Marker2D = $Markers/DialogueMarker1
@@ -15,7 +17,7 @@ var current_question: int = 1
 @onready var options: Node2D = $Options
 
 var active_option  
-var active_string 
+var active_string  # The string to be typed. 
 
 # Index of the current char in the active_option
 var index: int = 0
@@ -27,13 +29,25 @@ func _ready() -> void:
 	var data = json.parse_string(file.get_as_text())
 	current_character = data["character_1"]
 	
+	get_question()
+
+
+
+func get_question(): 
+	# Clear all current options.
+	for option in options.get_children(): 
+		option.queue_free()
+	
+	# Get question.
+	question.text = "[center]" + current_character[str(current_qna_index)].get("question") + "[/center]"
+	
+	# Get all dialogue options.
 	var i = 1
-	# Get all dialogue options
-	for option in current_character[str(current_question)]: 
+	for option in current_character[str(current_qna_index)]: 
 		# This is the question, not an option.
 		if str(option) == "question": continue
 		
-		var dialogue_string = current_character[str(current_question)][str(option)]
+		var dialogue_string = current_character[str(current_qna_index)][str(option)]
 		var dialogue_bubble = DIALOGUE_BUBBLE.instantiate()
 		match i: 
 			1: 
@@ -46,7 +60,7 @@ func _ready() -> void:
 				dialogue_bubble.init(dialogue_string, dialogue_marker_4.position) 
 			_: 
 				dialogue_bubble.init(dialogue_string, dialogue_marker_1.position)
-				
+		
 		i+=1
 		options.add_child(dialogue_bubble)
 
@@ -72,6 +86,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				## Advance to the next character
 				active_option.text = Globals.format_string(index, active_string)
 				index = min(index+1, active_string.length())
+				
+				# Reached end of active_string. 
+				if index == active_string.length(): 
+					print("end of sentence reached")
+					current_qna_index += 1
+					index = 0
+					get_question()
 				
 
 

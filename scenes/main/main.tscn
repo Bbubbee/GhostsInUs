@@ -23,7 +23,18 @@ text = "[center]dis bitch got me paying her rent [/center]"
 [node name="DialogueGenerator" type="Node2D" parent="."]
 script = ExtResource("2_kgr3w")
 
+[node name="Question" type="RichTextLabel" parent="DialogueGenerator"]
+offset_left = 440.0
+offset_top = 281.0
+offset_right = 704.0
+offset_bottom = 348.0
+bbcode_enabled = true
+text = "Test question"
+
 [node name="Markers" type="Node2D" parent="DialogueGenerator"]
+
+[node name="Question" type="Marker2D" parent="DialogueGenerator/Markers"]
+position = Vector2(578, 549)
 
 [node name="DialogueMarker1" type="Marker2D" parent="DialogueGenerator/Markers"]
 position = Vector2(554, 62)
@@ -38,11 +49,3 @@ position = Vector2(940, 286)
 position = Vector2(578, 549)
 
 [node name="Options" type="Node2D" parent="DialogueGenerator"]
-
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-offset_left = 446.0
-offset_top = 283.0
-offset_right = 710.0
-offset_bottom = 350.0
-bbcode_enabled = true
-text = "[center]What do you like to do on the weekends? [/center]"
