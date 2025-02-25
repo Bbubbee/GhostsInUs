@@ -2,10 +2,8 @@ extends Node2D
 
 const DIALOGUE_BUBBLE = preload("res://scenes/dialogue/dialogue_bubble.tscn")
 
-var current_character
-var current_qna_index: int = 1
-var current_question
-@onready var question: RichTextLabel = $Question
+# Temporary personality traits. 
+var temp_traits = ["introverted", "emotional", "dry"]
 
 # Places to spawn the dialogue. 
 @onready var dialogue_marker_1: Marker2D = $Markers/DialogueMarker1
@@ -13,14 +11,25 @@ var current_question
 @onready var dialogue_marker_3: Marker2D = $Markers/DialogueMarker3
 @onready var dialogue_marker_4: Marker2D = $Markers/DialogueMarker4
 
-# Holds each of the dialogue options. 
+# Scenario = a question and options 
+# Question = asked to the player by the ghost to romance. 
+# Option = possible response to a question. There is only one right answer to a question. 
+	# Answer quickly and correctly to romance her and avoid death. 
+
+var current_character  # The ghost to romance. 
+var current_scenario_index: int = 1  # Keeps track of the current scenario
+var current_question
+@onready var question: RichTextLabel = $Question  # Display s the question on the screen. 
+
+# Holds each of the dialogue options instaces. 
 @onready var options: Node2D = $Options
 
-var active_option  
-var active_string  # The string to be typed. 
+var active_option  # Reference to the active option. 
+var active_string  # The string to be typed from the active option. 
 
-# Index of the current char in the active_option
-var index: int = 0
+var index: int = 0  
+	# Index of the current char in the active option.
+	# Keeps track of where we are in the sentence of the active option. 
 
 func _ready() -> void:
 	# Gets the dialogue json. 
@@ -29,37 +38,37 @@ func _ready() -> void:
 	var data = json.parse_string(file.get_as_text())
 	current_character = data["character_1"]
 	
-	get_question()
+	get_scenario()
 
 
-
-func get_question(): 
+# Gets the scenario based on the current scenario index. 
+func get_scenario(): 
 	# Clear all current options.
 	for option in options.get_children(): 
 		option.queue_free()
 	
 	# Get question.
-	question.text = "[center]" + current_character[str(current_qna_index)].get("question") + "[/center]"
+	question.text = "[center]" + current_character[str(current_scenario_index)].get("question") + "[/center]"
 	
 	# Get all dialogue options.
 	var i = 1
-	for option in current_character[str(current_qna_index)]: 
+	for option in current_character[str(current_scenario_index)]: 
 		# This is the question, not an option.
 		if str(option) == "question": continue
 		
-		var dialogue_string = current_character[str(current_qna_index)][str(option)]
+		var option_string = current_character[str(current_scenario_index)][str(option)]
 		var dialogue_bubble = DIALOGUE_BUBBLE.instantiate()
 		match i: 
 			1: 
-				dialogue_bubble.init(dialogue_string, dialogue_marker_1.position)
+				dialogue_bubble.init(option_string, dialogue_marker_1.position)
 			2: 
-				dialogue_bubble.init(dialogue_string, dialogue_marker_2.position) 
+				dialogue_bubble.init(option_string, dialogue_marker_2.position) 
 			3: 
-				dialogue_bubble.init(dialogue_string, dialogue_marker_3.position) 
+				dialogue_bubble.init(option_string, dialogue_marker_3.position) 
 			4: 
-				dialogue_bubble.init(dialogue_string, dialogue_marker_4.position) 
+				dialogue_bubble.init(option_string, dialogue_marker_4.position) 
 			_: 
-				dialogue_bubble.init(dialogue_string, dialogue_marker_1.position)
+				dialogue_bubble.init(option_string, dialogue_marker_1.position)
 		
 		i+=1
 		options.add_child(dialogue_bubble)
@@ -71,28 +80,30 @@ func _unhandled_input(event: InputEvent) -> void:
 		var typed_event = event as InputEventKey
 		var key_typed = PackedByteArray([typed_event.unicode]).get_string_from_utf8()
 		
-		# Get the first letter of each option. 
+		# See if the key starts with one of the options. 
 		if not active_option: 
 			for option in options.get_children(): 
+				# Key matches one of the options. 
+				# Set that option as the active option. 
 				if key_typed == option.raw_text[0]: 
 					active_option = option	
 					active_string = active_option.raw_text 
 					active_option.text = Globals.format_string(index, active_string)
 					index = min(index+1, active_option.raw_text.length())
-					print('lol')
+		
+		# Only do this if there is an active option. 
 		else: 
-			# Typed the correct character
+			# Typed the correct character.
 			if key_typed == active_string[min(index, active_string.length()-1)]:
-				## Advance to the next character
+				# Advance to the next character
 				active_option.text = Globals.format_string(index, active_string)
 				index = min(index+1, active_string.length())
 				
 				# Reached end of active_string. 
 				if index == active_string.length(): 
-					print("end of sentence reached")
-					current_qna_index += 1
+					current_scenario_index += 1
 					index = 0
-					get_question()
+					get_scenario()
 				
 
 

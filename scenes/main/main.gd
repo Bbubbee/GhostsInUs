@@ -27,13 +27,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		var typed_event = event as InputEventKey
 		var key_typed = PackedByteArray([typed_event.unicode]).get_string_from_utf8()
 			
-		# Typed the correct character
+		# Typed the correct character.
 		if key_typed == text[min(index, text.length()-1)]:
-			# Advance to the next character
+			# Advance to the next character.
 			index = min(index+1, text.length())
 			subtitle.text = Globals.format_string(index, text, done_color, current_color, todo_color)
 		
-		# Finished the word
+		# Finished the word.
 		if index == text.length(): 
 			index = 0 
 			current_line += 1
