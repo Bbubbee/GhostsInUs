@@ -3,7 +3,7 @@ extends Node2D
 const DIALOGUE_BUBBLE = preload("res://scenes/dialogue/dialogue_bubble.tscn")
 
 # Temporary personality traits. 
-var temp_traits = ["introverted", "emotional", "dry"]
+var temp_personality
 
 # Places to spawn the dialogue. 
 @onready var dialogue_marker_1: Marker2D = $Markers/DialogueMarker1
@@ -36,7 +36,11 @@ func _ready() -> void:
 	var file = FileAccess.open("res://assets/json/text.json", FileAccess.READ) 
 	var json = JSON.new() 
 	var data = json.parse_string(file.get_as_text())
+	
+	# Get character
 	current_character = data["character_1"]
+	
+	temp_personality = current_character.get("personality")
 	
 	get_scenario()
 
@@ -48,11 +52,13 @@ func get_scenario():
 		option.queue_free()
 	
 	# Get question.
-	question.text = "[center]" + current_character[str(current_scenario_index)].get("question") + "[/center]"
-	
+	question.text = "[center]" + current_character.get(str(current_scenario_index)).get("question") + "[/center]"
+
 	# Get all dialogue options.
 	var i = 1
-	for option in current_character[str(current_scenario_index)]: 
+	var options_dictionary = current_character.get(str(current_scenario_index))
+
+	for option in options_dictionary: 
 		# This is the question, not an option.
 		if str(option) == "question": continue
 		
