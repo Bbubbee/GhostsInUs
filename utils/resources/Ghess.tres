@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Character" load_steps=2 format=3 uid="uid://b58gct0j67yxu"]
+
+[ext_resource type="Script" path="res://utils/resources/character.gd" id="1_xw8uw"]
+
+[resource]
+script = ExtResource("1_xw8uw")
+name = "Ghess"
+flavor = "Savoury"
+love_language = "Words of affirmation"
+sense_of_humor = "Sarcastic"

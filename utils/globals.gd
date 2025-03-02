@@ -1,6 +1,13 @@
 extends Node
 
 
+enum traits {
+	sweet, 
+	savory, 
+	sour
+}
+
+
 ## Sets the subtitle based on a given string. 
 ## Formats the subtitle with the correct colors. 
 ## Colors for done, current, and todo chararacters.

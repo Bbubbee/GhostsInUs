@@ -1,7 +1,8 @@
 {
  	"character_1" : {
 		"personality": {
-			"general": "Savoury"
+			"general": "savoury",
+			"love_language": "word_of_afirmation"
 		},
 		
 		"1": {

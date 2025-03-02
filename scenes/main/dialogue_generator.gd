@@ -2,8 +2,9 @@ extends Node2D
 
 const DIALOGUE_BUBBLE = preload("res://scenes/dialogue/dialogue_bubble.tscn")
 
-# Temporary personality traits. 
+## Temporary variables: 
 var temp_personality
+const GHESS = preload("res://utils/resources/Ghess.tres")
 
 # Places to spawn the dialogue. 
 @onready var dialogue_marker_1: Marker2D = $Markers/DialogueMarker1
@@ -43,6 +44,8 @@ func _ready() -> void:
 	temp_personality = current_character.get("personality")
 	
 	get_scenario()
+	
+	print(GHESS.sense_of_humor)
 
 
 # Gets the scenario based on the current scenario index. 
