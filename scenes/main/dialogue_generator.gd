@@ -60,7 +60,7 @@ func get_scenario():
 	# Get all dialogue options.
 	var i = 1
 	var options_dictionary = current_character.get(str(current_scenario_index))
-
+	
 	for option in options_dictionary: 
 		# This is the question, not an option.
 		if str(option) == "question": continue

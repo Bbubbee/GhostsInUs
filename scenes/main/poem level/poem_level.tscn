@@ -1,8 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://4rcqusat7c3u"]
+[gd_scene load_steps=3 format=3 uid="uid://4rcqusat7c3u"]
 
 [ext_resource type="Script" path="res://word_generator.gd" id="1_hx0aj"]
+[ext_resource type="Script" path="res://scenes/main/poem level/poem_level.gd" id="1_ym3uf"]
 
 [node name="PoemLevel" type="Node2D"]
+script = ExtResource("1_ym3uf")
 
 [node name="WordGenerator" type="Node2D" parent="."]
 script = ExtResource("1_hx0aj")
+
+[node name="Words" type="Node2D" parent="."]
