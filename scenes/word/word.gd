@@ -14,6 +14,10 @@ func show_text(index: int):
 	self.text = Globals.format_string(index, raw_text)
 
 
+func clear_text(): 
+	self.text = "[center]" + raw_text + "[/center]"
+
+
 func is_typed_correctly(key, index): 
 	if key == raw_text[index]: return true
 	else: return false

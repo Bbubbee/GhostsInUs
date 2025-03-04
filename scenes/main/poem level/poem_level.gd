@@ -7,10 +7,19 @@ const WORD = preload("res://scenes/word/word.tscn")
 
 # Contains all the word nodes on screen. 
 @onready var words = $Words
-var active_words = []
+var active_words: Array[Word] = []
 var index: int:
-	set(val): 
-		index = val
+	set(val):
+		if not active_words: return
+		
+		var longest_word: int = 0
+		for word in active_words: 
+			# Get the longest word.
+			if word.raw_text.length() >= longest_word: 
+				longest_word = word.raw_text.length()
+		
+		index = min(val, longest_word-1)
+	
 
 func _ready():
 	
@@ -44,48 +53,30 @@ func _unhandled_input(event: InputEvent) -> void:
 				if key_typed == word.raw_text[0]: 
 					active_words.append(word)
 					word.show_text(index) 
-			
-			index += 1
+		
+			# TEMP: Only go to next character if correct. 
+			if active_words: index += 1
 			
  	
-		## There are active words. 
+		# There are active words. 
 		else: 
+			# This is a list of words to remove from the active words. 
+			# Remove these words if the typed character isn't correct. 
+			var words_to_remove: Array[Word] = []
 			for word in active_words: 
-				print("checking this word: ", word.raw_text)
+				# The typed character is correct for this word.
 				if word.is_typed_correctly(key_typed, index):
 					word.show_text(index)  
 				else: 
 					# Remove this word from the active words. 
-					active_words.erase(word) 
-					print('removing', word.raw_text)
+					words_to_remove.append(word) 
+			
+			# Remove all incorrect words. 
+			for word in words_to_remove: 
+				word.clear_text()
+				active_words.erase(word) 
+			
 					
 					
 			index += 1
-			
-		
-#var active_option  # Reference to the active option. 
-
-		#if not active_option: 
-			#for word in words.get_children(): 
-				## Key matches one of the options. 
-				## Set that option as the active option. 
-				#if key_typed == option.raw_text[0]: 
-					#active_option = word	
-					#active_string = active_option.raw_text 
-					#active_option.text = Globals.format_string(index, active_string)
-					#index = min(index+1, active_option.raw_text.length())
-		#
-		## Only do this if there is an active option. 
-		#else: 
-			## Typed the correct character.
-			#if key_typed == active_string[min(index, active_string.length()-1)]:
-				## Advance to the next character
-				#active_option.text = Globals.format_string(index, active_string)
-				#index = min(index+1, active_string.length())
-				#
-				## Reached end of active_string. 
-				#if index == active_string.length(): 
-					#current_scenario_index += 1
-					#index = 0
-					#get_scenario()
-					
+	
