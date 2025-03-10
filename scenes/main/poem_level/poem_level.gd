@@ -10,7 +10,10 @@ const WORD = preload("res://scenes/word/word.tscn")
 var active_words: Array[Word] = []
 var index: int:
 	set(val):
-		if not active_words: return
+		# TEMP:
+		if not active_words: 
+			index = 0
+			return
 		
 		var longest_word: int = 0
 		for word in active_words: 
@@ -20,6 +23,8 @@ var index: int:
 		
 		index = min(val, longest_word-1)
 	
+# The word the user has currently typed.
+var typed_word: String
 
 func _ready():
 	
@@ -43,22 +48,25 @@ func _ready():
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.is_pressed(): 
+	if event is InputEventKey and event.is_pressed() and not event.is_action_pressed("enter_word"): 
+		
 		var typed_event = event as InputEventKey
 		var key_typed = PackedByteArray([typed_event.unicode]).get_string_from_utf8()
 		
-		# There are no active words. 
+		## There are no active words. 
+		#  Check if key matches any words on the screen. 
 		if not active_words: 
 			for word in words.get_children(): 
 				if key_typed == word.raw_text[0]: 
 					active_words.append(word)
 					word.show_text(index) 
-		
+			
 			# TEMP: Only go to next character if correct. 
 			if active_words: index += 1
 			
- 	
-		# There are active words. 
+		## There are active words. 
+		# See if the key matches the the current character in
+		# any active words. 
 		else: 
 			# This is a list of words to remove from the active words. 
 			# Remove these words if the typed character isn't correct. 
@@ -76,7 +84,46 @@ func _unhandled_input(event: InputEvent) -> void:
 				word.clear_text()
 				active_words.erase(word) 
 			
+			if active_words: 
+				index += 1
+			else: 
+				index = 0		
+		
+		# TODO: Temp way of clearing typed word if there are no active words. 
+		if active_words:
+			typed_word += key_typed
+		else:
+			typed_word = ""
+			
+			
+	## Enter is pressed. 
+	## Check if any words have been completed. If so, increase score. 
+	if event.is_action_pressed("enter_word"):
+		# TODO: Temp way of checking index+1 (the next character) 
+		var new_index = index+1 
+		
+		# TODO: Temp way of clearing words (because a correct one was entered).
+		var clear_words: bool = false
+		
+		# Check if any of the active words are complete (correct)
+		for word in active_words: 
+			if word.is_correct(typed_word): 
+				print("Correct!: " + word.raw_text)
+				Events.increase_score.emit()
+				clear_words = true
+		
+		# Clear active words.
+		if clear_words: 
+			index = 0 
+			for word in active_words:
+				word.clear_text()
+			active_words = []
+			typed_word = ""
+			
+				
 					
+				
+
 					
-			index += 1
+	
 	
