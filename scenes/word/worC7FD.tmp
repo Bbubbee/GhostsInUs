@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnhuthfxegfhm"]
+
+[ext_resource type="Script" path="res://scenes/word/word.gd" id="1_nsfns"]
+
+[node name="Word" type="RichTextLabel"]
+offset_right = 224.0
+offset_bottom = 54.0
+bbcode_enabled = true
+text = "Test "
+scroll_active = false
+script = ExtResource("1_nsfns")

@@ -3,11 +3,53 @@ class_name Word
 
 var feeling: Globals.traits
 var raw_text: String
+var direction: Vector2 = Vector2.ZERO
 
-func init(text: String, feeling: Globals.traits): 
+signal delete_me(word: Word)
+
+
+var type: Type
+enum Type {
+	MOVER, 
+	SPAWNER
+}
+
+
+func init(text: String, feeling: Globals.traits, type: Type, dir: Vector2 = Vector2.ZERO): 
 	self.text = "[center]" + text + "[/center]"
-	raw_text = text
+	self.raw_text = text
 	self.feeling = feeling
+	self.type = type
+	
+	if dir: 
+		self.direction = dir
+	
+	
+func _physics_process(delta: float) -> void:
+	if type == 0: 
+		move_word()
+		is_outside_of_boundaries()
+	
+	
+func is_outside_of_boundaries() -> bool: 
+	if position.x <= -200: 
+		delete_me.emit(self) 
+		queue_free()
+	
+	return true 
+
+
+func move_word(): 
+	if direction == Vector2.LEFT: 
+		self.position.x -= 4
+	elif direction == Vector2.RIGHT:  
+		self.position.x += 4 
+	elif direction == Vector2.UP: 
+		self.position.y -= 4
+	elif direction == Vector2.DOWN: 
+		self.position.y += 4
+	#else: 
+		#self.position.x -= 5
 
 
 func show_text(index: int): 
@@ -24,8 +66,8 @@ func is_correct(string_to_check: String):
 
 
 func is_typed_correctly(key, index): 
-	# TODO: Temp way of checking if word is completed. 
-	# If the word is completed
+	# TEMP: Checking if word is completed. 
+	# If the word is completed then it is typed correctly. Disregard keys after. 
 	if index >= raw_text.length(): return true
 	
 	if key == raw_text[index]: return true

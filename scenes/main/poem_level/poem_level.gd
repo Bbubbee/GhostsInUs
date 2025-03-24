@@ -2,8 +2,10 @@ extends Node2D
 
 const WORD = preload("res://scenes/word/word.tscn")
 
+@onready var word_spawn_timer: Timer = $WordSpawnTimer
 
-@onready var word_generator = $WordGenerator
+
+@onready var word_generator: WordGenerator = $WordGenerator
 
 # Contains all the word nodes on screen. 
 @onready var words = $Words
@@ -26,27 +28,14 @@ var index: int:
 # The word the user has currently typed.
 var typed_word: String
 
+@onready var window_size = get_viewport_rect().size
+
+
 func _ready():
-	
-	# Spawn a bunch of temporary words 
-	var window_size = get_viewport_rect().size
-	for i in range(4): 
-		var word = WORD.instantiate() 
-		var random_word = word_generator.get_word()
-		word.init(random_word[0], random_word[1])
-		match i: 
-			0: 
-				word.position = Vector2(window_size.x/2, 0+100)  
-			1: 
-				word.position = Vector2(window_size.x/2, window_size.y-100)  
-			2: 
-				word.position = Vector2(150, window_size.y/2)  
-			3: 
-				word.position = Vector2(window_size.x-150, window_size.y/2) 
-		
-		words.add_child(word) 
+	pass
 
 
+## Handles all the typing. (main gameplay loop) 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed() and not event.is_action_pressed("enter_word"): 
 		
@@ -61,7 +50,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					active_words.append(word)
 					word.show_text(index) 
 			
-			# TEMP: Only go to next character if correct. 
+			# Only go to next character if correct. 
 			if active_words: index += 1
 			
 		## There are active words. 
@@ -99,20 +88,22 @@ func _unhandled_input(event: InputEvent) -> void:
 	## Enter is pressed. 
 	## Check if any words have been completed. If so, increase score. 
 	if event.is_action_pressed("enter_word"):
-		# TODO: Temp way of checking index+1 (the next character) 
+		# TEMP: Temp way of checking index+1 (the next character) 
 		var new_index = index+1 
 		
-		# TODO: Temp way of clearing words (because a correct one was entered).
-		var clear_words: bool = false
+		# TEMP: Correct word. 
+		var correct_word: Word 
 		
 		# Check if any of the active words are complete (correct)
+		var clear_words: bool = false
 		for word in active_words: 
 			if word.is_correct(typed_word): 
+				correct_word = word
 				print("Correct!: " + word.raw_text)
 				Events.increase_score.emit()
 				clear_words = true
 		
-		# Clear active words.
+		# TEMP: Temp way of clearing words (because a correct one was entered).
 		if clear_words: 
 			index = 0 
 			for word in active_words:
@@ -120,10 +111,51 @@ func _unhandled_input(event: InputEvent) -> void:
 			active_words = []
 			typed_word = ""
 			
-				
-					
-				
+			correct_word.queue_free()
+			
 
-					
+func _on_word_spawn_timer_timeout() -> void:
+	spawn_mover()
+	
+
+func spawn_mover(): 
+	# TEMP: Spawn a mover word. 
+	var word = WORD.instantiate()
+	var random_word = word_generator.get_word()
+	word.init(random_word[0], random_word[1], Word.Type.MOVER)
+	word.delete_me.connect(_on_delete_word)
+	words.add_child(word)
+	
+	# Randomly choose which direction to spawn from. 
+	# Up, down, left, right. 
+	var r = randi_range(0, 3)
+	var start_pos: Vector2
+	var dir: Vector2
+	#r = 2
+	match r: 
+		0: 
+			word.direction = Vector2.LEFT
+			start_pos = Vector2(window_size.x+100, randi_range(0, window_size.y-100))
+		1: 
+			word.direction = Vector2.RIGHT 
+			start_pos = Vector2(0-100, randi_range(0, window_size.y-100))
+		2: 
+			word.direction = Vector2.UP 
+			start_pos = Vector2(randi_range(0, window_size.x), window_size.y)
+		3: 
+			word.direction = Vector2.DOWN 
+			start_pos = Vector2(randi_range(0, window_size.x), 0)
+		_: 
+			pass
+	
+	print(start_pos)
+	word.position = Vector2(start_pos)
+
+
+func _on_delete_word(deleted_word): 
+	active_words.erase(deleted_word) 
+	
+	
+	
 	
 	

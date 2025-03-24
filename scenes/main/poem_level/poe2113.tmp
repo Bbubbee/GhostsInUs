@@ -19,7 +19,7 @@ text = "score: "
 script = ExtResource("3_o2k8d")
 
 [node name="WordSpawnTimer" type="Timer" parent="."]
-wait_time = 0.75
+wait_time = 2.0
 autostart = true
 
 [connection signal="timeout" from="WordSpawnTimer" to="." method="_on_word_spawn_timer_timeout"]
