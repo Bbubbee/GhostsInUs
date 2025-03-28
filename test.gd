@@ -1,5 +1,6 @@
 extends Control
 
+@onready var label = $Label
 
 func _ready() -> void:
-	print(self.size)
+	print(label.size)

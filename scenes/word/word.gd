@@ -23,6 +23,7 @@ func init(text: String, feeling: Globals.traits, type: Type, dir: Vector2 = Vect
 	
 	if dir: 
 		self.direction = dir
+
 	
 	
 func _physics_process(delta: float) -> void:

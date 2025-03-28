@@ -148,13 +148,16 @@ func spawn_mover():
 		_: 
 			pass
 	
-	print(start_pos)
 	word.position = Vector2(start_pos)
 
 
-func _on_delete_word(deleted_word): 
+func _on_delete_word(deleted_word: Word): 
 	active_words.erase(deleted_word) 
+	word_generator.remove_word(deleted_word.raw_text)
 	
+
+
+
 	
 	
 	

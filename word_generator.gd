@@ -1,6 +1,8 @@
 extends Node2D
 class_name WordGenerator
 
+var current_words: Array[String] = []
+
 var words = {
 	"pleasant": Globals.traits.sweet,
 	
@@ -34,12 +36,24 @@ var words = {
 	"ember": Globals.traits.savory,
 	"valor": Globals.traits.savory,
 	"legacy": Globals.traits.savory,
-	"rhythm": Globals.traits.savory
+	"rhythm": Globals.traits.savory,
 }
 
 	
 func get_word(): 
 	var word = words.keys().pick_random()
+	
+	# Check if this word is being used. If so, pick again. 
+	while current_words.has(word): 
+		word = words.keys().pick_random()
+	
+	current_words.append(word) 
+		
 	var feeling = words[word] 
 	return [word, feeling]
+	
+
+func remove_word(word: String): 
+	print("delete this word: ", word)
+	current_words.erase(word)  
 	
