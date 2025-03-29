@@ -31,10 +31,6 @@ var typed_word: String
 @onready var window_size = get_viewport_rect().size
 
 
-func _ready():
-	pass
-
-
 ## Handles all the typing. (main gameplay loop) 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed() and not event.is_action_pressed("enter_word"): 
@@ -54,7 +50,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if active_words: index += 1
 			
 		## There are active words. 
-		# See if the key matches the the current character in
+		# See if the key matches the current character in
 		# any active words. 
 		else: 
 			# This is a list of words to remove from the active words. 
@@ -73,16 +69,12 @@ func _unhandled_input(event: InputEvent) -> void:
 				word.clear_text()
 				active_words.erase(word) 
 			
-			if active_words: 
-				index += 1
-			else: 
-				index = 0		
+			if active_words: index += 1
+			else: index = 0		
 		
 		# TODO: Temp way of clearing typed word if there are no active words. 
-		if active_words:
-			typed_word += key_typed
-		else:
-			typed_word = ""
+		if active_words: typed_word += key_typed
+		else: typed_word = ""
 			
 			
 	## Enter is pressed. 
@@ -111,7 +103,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			active_words = []
 			typed_word = ""
 			
-			correct_word.queue_free()
+			correct_word.word_is_correct()
+			
 			
 
 func _on_word_spawn_timer_timeout() -> void:
@@ -135,16 +128,16 @@ func spawn_mover():
 	match r: 
 		0: 
 			word.direction = Vector2.LEFT
-			start_pos = Vector2(window_size.x+100, randi_range(0, window_size.y-100))
+			start_pos = Vector2(window_size.x+50, randi_range(0, window_size.y-50))
 		1: 
 			word.direction = Vector2.RIGHT 
-			start_pos = Vector2(0-100, randi_range(0, window_size.y-100))
+			start_pos = Vector2(0-79, randi_range(0, window_size.y-50))
 		2: 
 			word.direction = Vector2.UP 
 			start_pos = Vector2(randi_range(0, window_size.x), window_size.y)
 		3: 
 			word.direction = Vector2.DOWN 
-			start_pos = Vector2(randi_range(0, window_size.x), 0)
+			start_pos = Vector2(randi_range(0, window_size.x), -50)
 		_: 
 			pass
 	

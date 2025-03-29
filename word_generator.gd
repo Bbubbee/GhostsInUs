@@ -44,8 +44,14 @@ func get_word():
 	var word = words.keys().pick_random()
 	
 	# Check if this word is being used. If so, pick again. 
+	var failsafe: int = 10
 	while current_words.has(word): 
 		word = words.keys().pick_random()
+		
+		failsafe -= 1 
+		if failsafe <= 0:
+			print('breaking out of loop')
+			break
 	
 	current_words.append(word) 
 		
